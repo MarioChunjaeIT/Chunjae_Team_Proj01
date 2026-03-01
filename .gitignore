@@ -1,0 +1,53 @@
+# ===========================
+# Gradle
+# ===========================
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ===========================
+# IntelliJ IDEA
+# ===========================
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/dictionaries/
+.idea/shelf/
+.idea/httpRequests/
+.idea/discord.xml
+.idea/jpa-buddy.xml
+.idea/uiDesigner.xml
+.idea/vcs.xml
+.idea/webContexts.xml
+.idea/artifacts/
+.idea/libraries/
+.idea/codeStyles/
+*.iml
+*.iws
+out/
+
+# ===========================
+# Spring Boot
+# ===========================
+/src/main/resources/application-local.yml
+/src/main/resources/application-prod.yml
+/src/main/resources/application-dev.yml
+
+# ===========================
+# 업로드 파일
+# ===========================
+uploads/
+
+# ===========================
+# OS
+# ===========================
+.DS_Store
+Thumbs.db
+
+# ===========================
+# Log
+# ===========================
+*.log
+logs/
