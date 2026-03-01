@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cornedu.api.faq.mapper.FaqMapper">
+
+    <select id="findAll" resultType="com.cornedu.api.faq.dto.FaqDto">
+        SELECT fno, question, answer, cnt FROM tbl_faq ORDER BY fno DESC
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM tbl_faq
+    </select>
+
+    <select id="findByFno" resultType="com.cornedu.api.faq.dto.FaqDto">
+        SELECT fno, question, answer, cnt FROM tbl_faq WHERE fno = #{fno}
+    </select>
+
+    <update id="incrementCnt">
+        UPDATE tbl_faq SET cnt = cnt + 1 WHERE fno = #{fno}
+    </update>
+
+    <insert id="insert">
+        INSERT INTO tbl_faq (question, answer) VALUES (#{question}, #{answer})
+    </insert>
+
+    <update id="update">
+        UPDATE tbl_faq SET question = #{question}, answer = #{answer} WHERE fno = #{fno}
+    </update>
+
+    <delete id="deleteByFno">
+        DELETE FROM tbl_faq WHERE fno = #{fno}
+    </delete>
+
+</mapper>
