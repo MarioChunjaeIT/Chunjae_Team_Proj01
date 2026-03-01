@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cornedu.api.lecture.mapper.LectureMapper">
+
+    <select id="findAll" resultType="com.cornedu.api.lecture.dto.LectureDto">
+        SELECT lno, lecture_name AS lectureName, teacher, content, file_path AS filePath, target
+        FROM tbl_lecture
+        <if test="target != null and target != ''">
+            WHERE target = #{target}
+        </if>
+        ORDER BY lno ASC
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM tbl_lecture
+        <if test="target != null and target != ''">
+            WHERE target = #{target}
+        </if>
+    </select>
+
+    <select id="findByLno" resultType="com.cornedu.api.lecture.dto.LectureDto">
+        SELECT lno, lecture_name AS lectureName, teacher, content, file_path AS filePath, target
+        FROM tbl_lecture WHERE lno = #{lno}
+    </select>
+
+    <select id="findVideosByLno" resultType="com.cornedu.api.lecture.dto.LectureVideoDto">
+        SELECT vno, lno, v_title AS vTitle, file_path AS filePath, duration
+        FROM tbl_lecture_video WHERE lno = #{lno} ORDER BY vno ASC
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tbl_lecture (lecture_name, teacher, content, file_path, target)
+        VALUES (#{lectureName}, #{teacher}, #{content}, #{filePath}, #{target})
+    </insert>
+
+    <update id="update">
+        UPDATE tbl_lecture SET lecture_name = #{lectureName}, teacher = #{teacher}, content = #{content},
+        file_path = #{filePath}, target = #{target} WHERE lno = #{lno}
+    </update>
+
+    <delete id="deleteByLno">
+        DELETE FROM tbl_lecture WHERE lno = #{lno}
+    </delete>
+
+    <insert id="insertVideo">
+        INSERT INTO tbl_lecture_video (lno, v_title, file_path, duration)
+        VALUES (#{lno}, #{vTitle}, #{filePath}, #{duration})
+    </insert>
+
+    <update id="updateVideo">
+        UPDATE tbl_lecture_video SET v_title = #{vTitle}, file_path = #{filePath}, duration = #{duration} WHERE vno = #{vno}
+    </update>
+
+    <delete id="deleteVideoByVno">
+        DELETE FROM tbl_lecture_video WHERE vno = #{vno}
+    </delete>
+
+</mapper>
