@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cornedu.api.comment.mapper.CommentMapper">
+
+    <select id="findByBno" resultType="com.cornedu.api.comment.dto.CommentDto">
+        SELECT cno, bno, author, resdate, content FROM ${table} WHERE bno = #{bno} ORDER BY cno ASC
+    </select>
+
+    <insert id="insert">
+        INSERT INTO ${table} (bno, author, content) VALUES (#{comment.bno}, #{comment.author}, #{comment.content})
+    </insert>
+
+    <delete id="deleteByCno">
+        DELETE FROM ${table} WHERE cno = #{cno}
+    </delete>
+
+</mapper>
