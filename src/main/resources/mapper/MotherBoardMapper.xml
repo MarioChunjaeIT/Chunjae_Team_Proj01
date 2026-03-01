@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cornedu.api.motherboard.mapper.MotherBoardMapper">
+
+    <select id="findAll" resultType="com.cornedu.api.motherboard.dto.MotherBoardDto">
+        SELECT bno, title, content, author, resdate, cnt, fixed FROM tbl_mother_board
+        <where>
+            <if test="keyword != null and keyword != '' and searchType != null and searchType != ''">
+                <choose>
+                    <when test="searchType == 'title'">title LIKE CONCAT('%', #{keyword}, '%')</when>
+                    <when test="searchType == 'content'">content LIKE CONCAT('%', #{keyword}, '%')</when>
+                    <when test="searchType == 'author'">author LIKE CONCAT('%', #{keyword}, '%')</when>
+                    <when test="searchType == 'all'">(title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%') OR author LIKE CONCAT('%', #{keyword}, '%'))</when>
+                </choose>
+            </if>
+        </where>
+        ORDER BY fixed DESC, bno DESC LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM tbl_mother_board
+        <where>
+            <if test="keyword != null and keyword != '' and searchType != null and searchType != ''">
+                <choose>
+                    <when test="searchType == 'title'">title LIKE CONCAT('%', #{keyword}, '%')</when>
+                    <when test="searchType == 'content'">content LIKE CONCAT('%', #{keyword}, '%')</when>
+                    <when test="searchType == 'author'">author LIKE CONCAT('%', #{keyword}, '%')</when>
+                    <when test="searchType == 'all'">(title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%') OR author LIKE CONCAT('%', #{keyword}, '%'))</when>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+    <select id="findByBno" resultType="com.cornedu.api.motherboard.dto.MotherBoardDto">
+        SELECT bno, title, content, author, resdate, cnt, fixed FROM tbl_mother_board WHERE bno = #{bno}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tbl_mother_board (title, content, author) VALUES (#{title}, #{content}, #{author})
+    </insert>
+
+    <update id="update">
+        UPDATE tbl_mother_board SET title = #{title}, content = #{content} WHERE bno = #{bno}
+    </update>
+
+    <delete id="deleteByBno">
+        DELETE FROM tbl_mother_board WHERE bno = #{bno}
+    </delete>
+
+    <update id="incrementCnt">
+        UPDATE tbl_mother_board SET cnt = cnt + 1 WHERE bno = #{bno}
+    </update>
+
+</mapper>
