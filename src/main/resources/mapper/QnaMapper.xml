@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cornedu.api.qna.mapper.QnaMapper">
+
+    <select id="findAll" resultType="com.cornedu.api.qna.dto.QnaDto">
+        SELECT q.qno, q.title, q.content, q.author, m.name, q.resdate, q.cnt, q.lev, q.par
+        FROM tbl_qna q LEFT JOIN tbl_member m ON q.author = m.id
+        <where>
+            <if test="keyword != null and keyword != '' and searchType != null and searchType != ''">
+                <choose>
+                    <when test="searchType == 'title'">q.title LIKE CONCAT('%', #{keyword}, '%')</when>
+                    <when test="searchType == 'content'">q.content LIKE CONCAT('%', #{keyword}, '%')</when>
+                    <when test="searchType == 'author'">(q.author LIKE CONCAT('%', #{keyword}, '%') OR m.name LIKE CONCAT('%', #{keyword}, '%'))</when>
+                    <when test="searchType == 'all'">(q.title LIKE CONCAT('%', #{keyword}, '%') OR q.content LIKE CONCAT('%', #{keyword}, '%') OR q.author LIKE CONCAT('%', #{keyword}, '%') OR m.name LIKE CONCAT('%', #{keyword}, '%'))</when>
+                </choose>
+            </if>
+        </where>
+        ORDER BY q.par ASC, q.lev ASC, q.qno DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM tbl_qna q LEFT JOIN tbl_member m ON q.author = m.id
+        <where>
+            <if test="keyword != null and keyword != '' and searchType != null and searchType != ''">
+                <choose>
+                    <when test="searchType == 'title'">q.title LIKE CONCAT('%', #{keyword}, '%')</when>
+                    <when test="searchType == 'content'">q.content LIKE CONCAT('%', #{keyword}, '%')</when>
+                    <when test="searchType == 'author'">(q.author LIKE CONCAT('%', #{keyword}, '%') OR m.name LIKE CONCAT('%', #{keyword}, '%'))</when>
+                    <when test="searchType == 'all'">(q.title LIKE CONCAT('%', #{keyword}, '%') OR q.content LIKE CONCAT('%', #{keyword}, '%') OR q.author LIKE CONCAT('%', #{keyword}, '%') OR m.name LIKE CONCAT('%', #{keyword}, '%'))</when>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+    <select id="findByQno" resultType="com.cornedu.api.qna.dto.QnaDto">
+        SELECT q.qno, q.title, q.content, q.author, m.name, q.resdate, q.cnt, q.lev, q.par
+        FROM tbl_qna q LEFT JOIN tbl_member m ON q.author = m.id
+        WHERE q.qno = #{qno}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tbl_qna (title, content, author, lev, par) VALUES (#{title}, #{content}, #{author}, #{lev}, #{par})
+    </insert>
+
+    <update id="update">
+        UPDATE tbl_qna SET title = #{title}, content = #{content} WHERE qno = #{qno}
+    </update>
+
+    <delete id="deleteByQno">
+        DELETE FROM tbl_qna WHERE qno = #{qno}
+    </delete>
+
+    <update id="incrementCnt">
+        UPDATE tbl_qna SET cnt = cnt + 1 WHERE qno = #{qno}
+    </update>
+
+</mapper>
