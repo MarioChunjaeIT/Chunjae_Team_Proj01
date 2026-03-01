@@ -1,0 +1,43 @@
+server:
+  port: 8080
+
+app:
+  upload-dir: ${UPLOAD_DIR:./uploads}
+  password-reset-expiration-minutes: 30
+  password-reset-base-url: ${RESET_BASE_URL:http://localhost:3000/reset-password}
+  rate-limit-enabled: true
+
+spring:
+  datasource:
+    url: jdbc:mariadb://10.41.1.198:3306/team31
+    username: team3
+    password: chunjae33
+    driver-class-name: org.mariadb.jdbc.Driver
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.cornedu.api
+  configuration:
+    map-underscore-to-camel-case: true
+
+jwt:
+  secret: Y29ybmVkdS1hcGktand0LXNlY3JldC1rZXktMjAyNC1zdXBlci1sb25nLXNlY3VyZS1rZXk=
+  expiration: 86400000
+  refresh-expiration: 604800000
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
