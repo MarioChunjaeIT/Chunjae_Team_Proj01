@@ -1,0 +1,136 @@
+-- CORN EDU Database Schema (테이블명: tbl_ 접두사)
+
+CREATE TABLE IF NOT EXISTS tbl_member (
+    id VARCHAR(50) PRIMARY KEY,
+    pw VARCHAR(256) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(200),
+    tel VARCHAR(20),
+    resdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    point INT DEFAULT 0,
+    per INT DEFAULT 0,
+    profile_image_path VARCHAR(500),
+    status VARCHAR(20) DEFAULT 'ACTIVE'
+);
+
+CREATE TABLE IF NOT EXISTS tbl_refresh_token (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id VARCHAR(50) NOT NULL,
+    token VARCHAR(500) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_member_id (member_id)
+);
+
+CREATE TABLE IF NOT EXISTS tbl_password_reset (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id VARCHAR(50) NOT NULL,
+    token VARCHAR(100) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    used TINYINT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS tbl_board (
+    bno INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(500) NOT NULL,
+    content TEXT,
+    author VARCHAR(50),
+    resdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    cnt INT DEFAULT 0,
+    fixed TINYINT DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS tbl_mother_board (
+    bno INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(500) NOT NULL,
+    content TEXT,
+    author VARCHAR(50),
+    resdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    cnt INT DEFAULT 0,
+    fixed TINYINT DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS tbl_student_board (
+    bno INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(500) NOT NULL,
+    content TEXT,
+    author VARCHAR(50),
+    resdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    cnt INT DEFAULT 0,
+    fixed TINYINT DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS tbl_board_comment (
+    cno INT AUTO_INCREMENT PRIMARY KEY,
+    bno INT NOT NULL,
+    author VARCHAR(50),
+    resdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    content TEXT
+);
+
+CREATE TABLE IF NOT EXISTS tbl_mother_comment (
+    cno INT AUTO_INCREMENT PRIMARY KEY,
+    bno INT NOT NULL,
+    author VARCHAR(50),
+    resdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    content TEXT
+);
+
+CREATE TABLE IF NOT EXISTS tbl_student_comment (
+    cno INT AUTO_INCREMENT PRIMARY KEY,
+    bno INT NOT NULL,
+    author VARCHAR(50),
+    resdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    content TEXT
+);
+
+CREATE TABLE IF NOT EXISTS tbl_qna (
+    qno INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(500) NOT NULL,
+    content TEXT,
+    author VARCHAR(50),
+    resdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    cnt INT DEFAULT 0,
+    lev INT DEFAULT 0,
+    par INT DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS tbl_faq (
+    fno INT AUTO_INCREMENT PRIMARY KEY,
+    question VARCHAR(1000),
+    answer TEXT,
+    cnt INT DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS tbl_lecture (
+    lno INT AUTO_INCREMENT PRIMARY KEY,
+    lecture_name VARCHAR(500),
+    teacher VARCHAR(100),
+    content TEXT,
+    file_path VARCHAR(500),
+    target VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS tbl_lecture_video (
+    vno INT AUTO_INCREMENT PRIMARY KEY,
+    lno INT NOT NULL,
+    v_title VARCHAR(500),
+    file_path VARCHAR(500),
+    duration VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS tbl_point_log (
+    plno BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id VARCHAR(50) NOT NULL,
+    amount INT NOT NULL,
+    reason VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS tbl_token_blacklist (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(500) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
