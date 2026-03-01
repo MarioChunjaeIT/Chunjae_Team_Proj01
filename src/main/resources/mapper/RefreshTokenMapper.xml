@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cornedu.api.auth.mapper.RefreshTokenMapper">
+
+    <insert id="upsert">
+        INSERT INTO tbl_refresh_token (member_id, token, expires_at)
+        VALUES (#{memberId}, #{token}, #{expiresAt})
+        ON DUPLICATE KEY UPDATE token = #{token}, expires_at = #{expiresAt}
+    </insert>
+
+    <select id="findTokenByMemberId" resultType="string">
+        SELECT token FROM tbl_refresh_token WHERE member_id = #{memberId} AND expires_at > NOW()
+    </select>
+
+    <delete id="deleteByMemberId">
+        DELETE FROM tbl_refresh_token WHERE member_id = #{memberId}
+    </delete>
+
+</mapper>
